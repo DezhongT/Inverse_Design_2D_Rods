@@ -5,10 +5,12 @@ from utils import generate_config_from_txt , generate_config_from_scratch
 from solver import compute_theory, forward_solver, numerical_optimization
 
 
-Config, Config_noise = generate_config_from_txt("patterns/letterU.txt",  noise = 0.0e-4, rotation=-np.pi/2)
-plt.plot(Config[:, 1], Config[:, 2])
+Config, Config_noise = generate_config_from_txt("patterns/letterU.txt",  noise = 0.0e-4, rotation= -np.pi/2.0)
+Config, Config_noise = generate_config_from_txt("patterns/letterC1.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
+Config, Config_noise = generate_config_from_txt("patterns/letterL.txt",  noise = 0.0e-4, rotation= 0.0)
+Config, Config_noise = generate_config_from_txt("patterns/letterA.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
 
-plt.show()
+# exit(0)
 
 eta = 15.0 # definie the eta
 degree = 15 # define the degree of polynominal for theta
@@ -19,6 +21,7 @@ print("Completed baseline")
 Kap0_noise, natural_config_noise, BCs = compute_theory(Config_noise, eta, degree = degree)
 pred_config_noise = forward_solver(Kap0_noise, Config_noise[:, 0], eta,  BCs)
 print("Completed noise baseline")
+
 
 Kap0_opt, natural_config_opt, BCs = numerical_optimization(Config_noise, Kap0_noise, eta, BCs, degree=degree-1, max_iter=3000)
 pred_config_opt = forward_solver(Kap0_opt, Config_noise[:, 0], eta,  BCs)
@@ -50,7 +53,7 @@ Data = {"natural_config_base" : natural_config_base, "natural_config_noise" : na
 # Data = {"natural_config_base" : natural_config_base, "natural_config_noise" : natural_config_noise,
 #         "pred_config_base": pred_config_base, "pred_config_noise": pred_config_noise}
 import scipy.io
-scipy.io.savemat('LetterU_eta_20.mat', Data)
+scipy.io.savemat(f'LetterA_eta_{eta:g}.mat', Data)
 
 # dis = sqrt(sum(dis.^2, 2));
 # dis = cumsum(dis);

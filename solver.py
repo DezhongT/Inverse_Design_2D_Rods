@@ -262,7 +262,7 @@ def numerical_optimization(data, Kap0, eta, BCs, degree = 15, max_iter = 1000, l
     while iter < max_iter:
         ll, grad, q_guess = model_loss()
         optimizer.update(params, grad)
-        if ll < 0.001:
+        if ll < 0.001 and iter > 100:
             break
         if iter % 10 == 0:
             print(f"Iter: {iter} | loss {ll} | grad {np.linalg.norm(grad)}")

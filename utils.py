@@ -86,8 +86,14 @@ def generate_config_from_txt(path, noise = 0.001, rotation = 0.0):
     dis = np.sqrt(np.sum(dis**2, axis = 1))
     dis = np.cumsum(dis)
     dis = np.concatenate((np.array([0]), dis))
+    Config = Config/dis[-1]
+    Config -= Config[0, :]
+    dis = np.diff(Config, axis = 0)
+    dis = np.sqrt(np.sum(dis**2, axis = 1))
+    dis = np.cumsum(dis)
+    dis = np.concatenate((np.array([0]), dis))
     Config = np.hstack((dis.reshape(-1, 1), Config))
-    Config = Config/Config[-1, 0]
+
 
     X = Config[:, 1]
     Y = Config[:, 2]
