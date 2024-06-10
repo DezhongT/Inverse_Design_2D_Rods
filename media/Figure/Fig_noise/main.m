@@ -1,12 +1,19 @@
-data = importdata("train_temp.txt");
+% clear;clc;close all
 
-x = data(:, 2);
-y = data(:, 3);
+df = importdata('randomPath_eta_15_noise_0.0015.mat');
+
+h1 = figure;
+hold on
+interval = 1;
+
+natural_base = df.pred_config_base;
+natural_base = df.natural_config_base;
+x = natural_base(1:interval:end, 1);
+y = natural_base(1:interval:end, 2);
 z = zeros(size(x));
 
-[X, Y, Z] = tubeplot(x(45:55), y(45:55), z(45:55), 0.01, 20);
-[X, Y, Z] = tubeplot(x, y, z, 0.01, 20);
-figure;
+[X, Y, Z] = tubeplot(x, y, z, 0.005, 20);
+
 surf(X, Y, Z, 'FaceColor', 'cyan', 'EdgeColor', 'none');
 
 camlight('headlight');  % Add default headlight for better visualization
@@ -20,13 +27,20 @@ ylabel('Y');
 zlabel('Z');
 axis equal;
 grid on;
-
-view([0, 90])
 axis off;
 
-exportgraphics(gcf, 'rod.png', 'Resolution', 300);  % 300 DPI
+ylim([-0.1, 0.31])
+xlim([-0.45, 0.05])
+
+view([0, 90])
 
 
+pWidth = 4; % inches
+pHeight = 3;
+set(gcf, 'PaperUnits','inches', 'PaperPosition',[0 0 pWidth pHeight], ...
+    'PaperSize', [pWidth pHeight]);
+
+saveas(h1, 'SamplePlot.pdf');
 
 % Function to generate a tube around a parametric curve
 function [X, Y, Z] = tubeplot(x, y, z, radius, n)

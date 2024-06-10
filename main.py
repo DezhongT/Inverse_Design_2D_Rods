@@ -4,16 +4,21 @@ import numpy as np
 from utils import generate_config_from_txt , generate_config_from_scratch
 from solver import compute_theory, forward_solver, numerical_optimization
 
+# np.random.seed(1000)
+# np.random.seed(50)
+np.random.seed(12)
 
-Config, Config_noise = generate_config_from_txt("patterns/letterU.txt",  noise = 0.0e-4, rotation= -np.pi/2.0)
-Config, Config_noise = generate_config_from_txt("patterns/letterC1.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
-Config, Config_noise = generate_config_from_txt("patterns/letterL.txt",  noise = 0.0e-4, rotation= 0.0)
-Config, Config_noise = generate_config_from_txt("patterns/letterA.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
+# Config, Config_noise = generate_config_from_txt("patterns/letterU.txt",  noise = 0.0e-4, rotation= -np.pi/2.0)
+# Config, Config_noise = generate_config_from_txt("patterns/letterC1.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
+# Config, Config_noise = generate_config_from_txt("patterns/letterL.txt",  noise = 0.0e-4, rotation= 0.0)
+# Config, Config_noise = generate_config_from_txt("patterns/letterA.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
+# Config, Config_noise = generate_config_from_scratch(noise = 0.001)
+Config, Config_noise = generate_config_from_txt("patterns/sine.txt",  noise = 10e-4, rotation= np.pi/2)
 
 # exit(0)
 
-eta = 15.0 # definie the eta
-degree = 15 # define the degree of polynominal for theta
+eta = 5 # definie the eta
+degree = 5 # define the degree of polynominal for theta
 Kap0_base, natural_config_base, BCs = compute_theory(Config, eta, degree=degree)
 pred_config_base = forward_solver(Kap0_base, Config[:, 0], eta,  BCs)
 
@@ -48,12 +53,13 @@ plt.show()
 
 Data = {"natural_config_base" : natural_config_base, "natural_config_noise" : natural_config_noise,
         "natural_config_opt" : natural_config_opt, "pred_config_base": pred_config_base,
-        "pred_config_noise": pred_config_noise, "pred_config_opt" : pred_config_opt}
+        "pred_config_noise": pred_config_noise, "pred_config_opt" : pred_config_opt, 
+        "natural_config_detection": Config_noise}
 
 # Data = {"natural_config_base" : natural_config_base, "natural_config_noise" : natural_config_noise,
 #         "pred_config_base": pred_config_base, "pred_config_noise": pred_config_noise}
 import scipy.io
-scipy.io.savemat(f'LetterA_eta_{eta:g}.mat', Data)
+scipy.io.savemat(f'randomPath_eta_{eta:g}.mat', Data)
 
 # dis = sqrt(sum(dis.^2, 2));
 # dis = cumsum(dis);
