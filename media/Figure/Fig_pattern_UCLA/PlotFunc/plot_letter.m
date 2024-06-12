@@ -1,11 +1,11 @@
 clc; clear all; close all;
 
-load("../LetterA_Config.mat");
+load("../LetterC_Config.mat");
 
 FONT = 'Arial';
 FONTSIZE = 10;
-pWidth =  3.5; % inches
-pHeight = 3/4*3;
+pWidth =  1.75; % inches
+pHeight = pWidth / 4*3;
 
 x = Config(:, 2);
 y = Config(:, 3);
@@ -26,7 +26,11 @@ axis equal;
 view([0, 90])
 axis off;
 
-saveas(h1, '1.pdf');
+set(gca,'fontsize',FONTSIZE,'TickLabelInterpreter','latex');
+set(gcf, 'PaperUnits','inches', 'PaperPosition',[0 0 pWidth pHeight], ...
+    'PaperSize', [pWidth pHeight]);
+
+saveas(gcf, '2.pdf');
 
 
 
