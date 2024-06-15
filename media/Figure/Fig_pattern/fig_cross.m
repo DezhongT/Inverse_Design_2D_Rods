@@ -1,205 +1,202 @@
 close; clc; clear all;
 
+FONT = 'Arial';
+FONTSIZE = 10;
+pWidth =  3.5 ; % inches
+pHeight = pWidth /4*3 ;
+
 h = figure;
 hold on
 
 colpos = [0 166 81;237 28 36;0 174 239; 247 148 30 ]/255; 
-% colors, 1 black; 2 green; 3 red; 4 blue; 5 yellow
-number_of_colors = 6;
-mycolor = parula(number_of_colors); 
-
-%% 0 
-lineNumber = 3;
-
-df = importdata("sine_eta_5_rotation_0.mat");
-
-interval = 1;
-pred_base = df.pred_config_base;
-x = pred_base(1:interval:end, 1);
-y = pred_base(1:interval:end, 2);
-z = zeros(size(x));
-
-[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
-surf(X, Y, Z, 'FaceColor', 'cyan', 'EdgeColor', 'none');
+mycolor = colpos;
 
 
-interval = 10;
-pred_noise = df.pred_config_noise;
-x = pred_noise(1:interval:end, 1);
-y = pred_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(4,:), 'Marker', 'o', 'LineWidth', lineNumber)
+interval1 = 1;
+interval2 = 15;
+interval3 = 8;
+lineNumber = 2;
 
-pred_opt = df.pred_config_opt;
-x = pred_opt(1:interval:end, 1);
-y = pred_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(5,:), 'Marker', '^', 'LineWidth', lineNumber)
+df = importdata('sine_eta_5_rotation_0.mat');
 
-interval = 1;
 natural_base = df.natural_config_base;
-x = natural_base(1:interval:end, 1);
-y = natural_base(1:interval:end, 2);
-plot(x, y, 'LineStyle', '--', 'Color', mycolor(1,:), 'LineWidth', lineNumber)
-
-natural_noise = df.natural_config_noise;
-x = natural_noise(1:interval:end, 1);
-y = natural_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', ':', 'Color', mycolor(2,:), 'LineWidth', lineNumber)
-
-natural_opt = df.natural_config_opt;
-x = natural_opt(1:interval:end, 1);
-y = natural_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-.', 'Color', mycolor(3,:), 'LineWidth', lineNumber)
-
-
-%% -90
-lineNumber = 3;
-
-df = importdata("sine_eta_5_rotation_-90.mat");
-
-interval = 1;
-pred_base = df.pred_config_base;
-x = pred_base(1:interval:end, 1);
-y = pred_base(1:interval:end, 2);
+x = natural_base(1:interval1:end, 1);
+y = natural_base(1:interval1:end, 2);
 z = zeros(size(x));
-
 [X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
-surf(X, Y, Z, 'FaceColor', 'cyan', 'EdgeColor', 'none');
+h1 = surf(X, Y, Z, 'FaceColor', mycolor(3,:), 'EdgeColor', 'none');
+h1.FaceAlpha = 0.5;
 
-interval = 10;
-pred_noise = df.pred_config_noise;
-x = pred_noise(1:interval:end, 1);
-y = pred_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(4,:), 'Marker', 'o', 'LineWidth', lineNumber)
-
-pred_opt = df.pred_config_opt;
-x = pred_opt(1:interval:end, 1);
-y = pred_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(5,:), 'Marker', '^', 'LineWidth', lineNumber)
-
-interval = 1;
-natural_base = df.natural_config_base;
-x = natural_base(1:interval:end, 1);
-y = natural_base(1:interval:end, 2);
-plot(x, y, 'LineStyle', '--', 'Color', mycolor(1,:), 'LineWidth', lineNumber)
-
-natural_noise = df.natural_config_noise;
-x = natural_noise(1:interval:end, 1);
-y = natural_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', ':', 'Color', mycolor(2,:), 'LineWidth', lineNumber)
-
-natural_opt = df.natural_config_opt;
-x = natural_opt(1:interval:end, 1);
-y = natural_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-.', 'Color', mycolor(3,:), 'LineWidth', lineNumber)
-
-%% -180
-
-df = importdata("sine_eta_5_rotation_-180.mat");
-
-interval = 1;
 pred_base = df.pred_config_base;
-x = pred_base(1:interval:end, 1);
-y = pred_base(1:interval:end, 2);
+x = pred_base(1:interval1:end, 1);
+y = pred_base(1:interval1:end, 2);
 z = zeros(size(x));
-
 [X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
-surf(X, Y, Z, 'FaceColor', 'cyan', 'EdgeColor', 'none');
+h2 = surf(X, Y, Z, 'FaceColor', mycolor(1,:), 'EdgeColor', 'none');
+h2.FaceAlpha = 0.25;
 
-interval = 10;
-pred_noise = df.pred_config_noise;
-x = pred_noise(1:interval:end, 1);
-y = pred_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(4,:), 'Marker', 'o', 'LineWidth', lineNumber)
-
-pred_opt = df.pred_config_opt;
-x = pred_opt(1:interval:end, 1);
-y = pred_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(5,:), 'Marker', '^', 'LineWidth', lineNumber)
-
-interval = 1;
-natural_base = df.natural_config_base;
-x = natural_base(1:interval:end, 1);
-y = natural_base(1:interval:end, 2);
-plot(x, y, 'LineStyle', '--', 'Color', mycolor(1,:), 'LineWidth', lineNumber)
-
-natural_noise = df.natural_config_noise;
-x = natural_noise(1:interval:end, 1);
-y = natural_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', ':', 'Color', mycolor(2,:), 'LineWidth', lineNumber)
-
-natural_opt = df.natural_config_opt;
-x = natural_opt(1:interval:end, 1);
-y = natural_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-.', 'Color', mycolor(3,:), 'LineWidth', lineNumber)
-
-%% 90
-
-df = importdata("sine_eta_5_rotation_90.mat");
-
-interval = 1;
-pred_base = df.pred_config_base;
-x = pred_base(1:interval:end, 1);
-y = pred_base(1:interval:end, 2);
-z = zeros(size(x));
-
-[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
-surf(X, Y, Z, 'FaceColor', 'cyan', 'EdgeColor', 'none');
-
-interval = 10;
-pred_noise = df.pred_config_noise;
-x = pred_noise(1:interval:end, 1);
-y = pred_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(4,:), 'Marker', 'o', 'LineWidth', lineNumber)
-
-pred_opt = df.pred_config_opt;
-x = pred_opt(1:interval:end, 1);
-y = pred_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-', 'Color', mycolor(5,:), 'Marker', '^', 'LineWidth', lineNumber)
-
-interval = 1;
-natural_base = df.natural_config_base;
-x = natural_base(1:interval:end, 1);
-y = natural_base(1:interval:end, 2);
-plot(x, y, 'LineStyle', '--', 'Color', mycolor(1,:), 'LineWidth', lineNumber)
-
-natural_noise = df.natural_config_noise;
-x = natural_noise(1:interval:end, 1);
-y = natural_noise(1:interval:end, 2);
-plot(x, y, 'LineStyle', ':', 'Color', mycolor(2,:), 'LineWidth', lineNumber)
-
-natural_opt = df.natural_config_opt;
-x = natural_opt(1:interval:end, 1);
-y = natural_opt(1:interval:end, 2);
-plot(x, y, 'LineStyle', '-.', 'Color', mycolor(3,:), 'LineWidth', lineNumber)
-
-
-
-%% 
 camlight('headlight');  % Add default headlight for better visualization
 light('Position', [0 0 1.0], 'Style', 'local', 'Color', [0.5, 0.5, 0.5]);  % Light source in positive z-axis
-
 camlight; lighting phong;
+
+pred_opt = df.pred_config_opt;
+x = pred_opt(1:interval2:end, 1);
+y = pred_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', '^', 'Color', mycolor(1,:), 'LineWidth',lineNumber)
+
+natural_opt = df.natural_config_opt;
+x = natural_opt(1:interval2:end, 1);
+y = natural_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', 'o', 'Color', mycolor(3,:), 'LineWidth',lineNumber)
+
+noise_base = df.natural_config_detection;
+x = noise_base(1:interval3:end, 2);
+y = noise_base(1:interval3:end, 3);
+scatter(x, y, 20, 'MarkerEdgeColor', mycolor(4,:), 'MarkerFaceColor', mycolor(4,:), 'MarkerFaceAlpha', 0.5, 'MarkerEdgeAlpha', 0.8);
+
+df = importdata('sine_eta_5_rotation_-90.mat');
+
+natural_base = df.natural_config_base;
+x = natural_base(1:interval1:end, 1);
+y = natural_base(1:interval1:end, 2);
+z = zeros(size(x));
+[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
+h1 = surf(X, Y, Z, 'FaceColor', mycolor(3,:), 'EdgeColor', 'none');
+h1.FaceAlpha = 0.5;
+
+pred_base = df.pred_config_base;
+x = pred_base(1:interval1:end, 1);
+y = pred_base(1:interval1:end, 2);
+z = zeros(size(x));
+[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
+h2 = surf(X, Y, Z, 'FaceColor', mycolor(1,:), 'EdgeColor', 'none');
+h2.FaceAlpha = 0.25;
+
+camlight('headlight');  % Add default headlight for better visualization
+light('Position', [0 0 1.0], 'Style', 'local', 'Color', [0.5, 0.5, 0.5]);  % Light source in positive z-axis
+camlight; lighting phong;
+
+pred_opt = df.pred_config_opt;
+x = pred_opt(1:interval2:end, 1);
+y = pred_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', '^', 'Color', mycolor(1,:), 'LineWidth',lineNumber)
+
+natural_opt = df.natural_config_opt;
+x = natural_opt(1:interval2:end, 1);
+y = natural_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', 'o', 'Color', mycolor(3,:), 'LineWidth',lineNumber)
+
+noise_base = df.natural_config_detection;
+x = noise_base(1:interval3:end, 2);
+y = noise_base(1:interval3:end, 3);
+scatter(x, y, 20, 'MarkerEdgeColor', mycolor(4,:), 'MarkerFaceColor', mycolor(4,:), 'MarkerFaceAlpha', 0.5, 'MarkerEdgeAlpha', 0.8);
+
+df = importdata('sine_eta_5_rotation_-180.mat');
+
+natural_base = df.natural_config_base;
+x = natural_base(1:interval1:end, 1);
+y = natural_base(1:interval1:end, 2);
+z = zeros(size(x));
+[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
+h1 = surf(X, Y, Z, 'FaceColor', mycolor(3,:), 'EdgeColor', 'none');
+h1.FaceAlpha = 0.5;
+
+pred_base = df.pred_config_base;
+x = pred_base(1:interval1:end, 1);
+y = pred_base(1:interval1:end, 2);
+z = zeros(size(x));
+[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
+h2 = surf(X, Y, Z, 'FaceColor', mycolor(1,:), 'EdgeColor', 'none');
+h2.FaceAlpha = 0.25;
+
+camlight('headlight');  % Add default headlight for better visualization
+light('Position', [0 0 1.0], 'Style', 'local', 'Color', [0.5, 0.5, 0.5]);  % Light source in positive z-axis
+camlight; lighting phong;
+
+pred_opt = df.pred_config_opt;
+x = pred_opt(1:interval2:end, 1);
+y = pred_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', '^', 'Color', mycolor(1,:), 'LineWidth',lineNumber)
+
+natural_opt = df.natural_config_opt;
+x = natural_opt(1:interval2:end, 1);
+y = natural_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', 'o', 'Color', mycolor(3,:), 'LineWidth',lineNumber)
+
+noise_base = df.natural_config_detection;
+x = noise_base(1:interval3:end, 2);
+y = noise_base(1:interval3:end, 3);
+scatter(x, y, 20, 'MarkerEdgeColor', mycolor(4,:), 'MarkerFaceColor', mycolor(4,:), 'MarkerFaceAlpha', 0.5, 'MarkerEdgeAlpha', 0.8);
+
+df = importdata('sine_eta_5_rotation_90.mat');
+
+natural_base = df.natural_config_base;
+x = natural_base(1:interval1:end, 1);
+y = natural_base(1:interval1:end, 2);
+z = zeros(size(x));
+[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
+h1 = surf(X, Y, Z, 'FaceColor', mycolor(3,:), 'EdgeColor', 'none');
+h1.FaceAlpha = 0.5;
+
+pred_base = df.pred_config_base;
+x = pred_base(1:interval1:end, 1);
+y = pred_base(1:interval1:end, 2);
+z = zeros(size(x));
+[X, Y, Z] = tubeplot(x, y, z, 0.02, 20);
+h2 = surf(X, Y, Z, 'FaceColor', mycolor(1,:), 'EdgeColor', 'none');
+h2.FaceAlpha = 0.25;
+
+camlight('headlight');  % Add default headlight for better visualization
+light('Position', [0 0 1.0], 'Style', 'local', 'Color', [0.5, 0.5, 0.5]);  % Light source in positive z-axis
+camlight; lighting phong;
+
+pred_opt = df.pred_config_opt;
+x = pred_opt(1:interval2:end, 1);
+y = pred_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', '^', 'Color', mycolor(1,:), 'LineWidth',lineNumber)
+
+natural_opt = df.natural_config_opt;
+x = natural_opt(1:interval2:end, 1);
+y = natural_opt(1:interval2:end, 2);
+plot(x,y, 'LineStyle', '-', 'Marker', 'o', 'Color', mycolor(3,:), 'LineWidth',lineNumber)
+
+noise_base = df.natural_config_detection;
+x = noise_base(1:interval3:end, 2);
+y = noise_base(1:interval3:end, 3);
+scatter(x, y, 20, 'MarkerEdgeColor', mycolor(4,:), 'MarkerFaceColor', mycolor(4,:), 'MarkerFaceAlpha', 0.5, 'MarkerEdgeAlpha', 0.8);
+
+
+
 
 
 xlabel('X');
 ylabel('Y');
 zlabel('Z');
 axis equal;
-grid on;
+grid off;
+box on;
 
 view([0, 90])
-axis off;
 
-% ylim([-0.1, 0.31])
-% xlim([-0.45, 0.05])
+% ylim([-0.8, 0.8])
 
-pWidth = 4; % inches
-pHeight = 3;
+xlabel(gca, '$x$ [m]', 'interpreter', 'latex','FontSize',FONTSIZE)
+ylabel(gca, '$y$ [m]', 'interpreter', 'latex','FontSize',FONTSIZE);
+
+set(gca,'xticklabel',{[0 0.2 0.4 0.6 0.8 1.0]})
+
+set(gca,'fontsize', FONTSIZE,'TickLabelInterpreter','latex');
+
 set(gcf, 'PaperUnits','inches', 'PaperPosition',[0 0 pWidth pHeight], ...
     'PaperSize', [pWidth pHeight]);
-saveas(h, 'fig_cross.pdf');
 
+pWidth = 3.5; % inches
+pHeight = pWidth * 3 / 4;
+set(h, 'Units', 'inches', 'Position', [1, 1, pWidth, pHeight]);
+set(h, 'PaperUnits','inches', 'PaperPosition',[0 0 pWidth pHeight], ...
+    'PaperSize', [pWidth pHeight]);
 
+exportgraphics(h, '3.pdf','Resolution',600)
 
 % Function to generate a tube around a parametric curve
 function [X, Y, Z] = tubeplot(x, y, z, radius, n)
@@ -258,5 +255,4 @@ function [cx, cy, cz] = crossProduct(ax, ay, az, bx, by, bz)
     cy = az .* bx - ax .* bz;
     cz = ax .* by - ay .* bx;
 end
-
 

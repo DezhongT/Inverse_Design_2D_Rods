@@ -73,7 +73,7 @@ std_value = std(Opt_error_data, 0, 2);
 errorbar(Sigma, mean_value, std_value, '^-', 'Color', mycolor(3,:), ...
     'LineWidth',lineNumbebr);
 
-xlabel(gca, 'Measurement error, $\sigma$', 'interpreter', 'latex','FontSize',FONTSIZE)
+xlabel(gca, 'Measurement error, $\sigma$ [$\times 10^{-3}$]', 'interpreter', 'latex','FontSize',FONTSIZE)
 ylabel(gca, 'Design error, $e$', 'interpreter', 'latex','FontSize',FONTSIZE);
 
 box on

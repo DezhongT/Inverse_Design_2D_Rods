@@ -13,7 +13,7 @@ Degree = [6, 11, 16];
 FONT = 'Arial';
 FONTSIZE = 10;
 pWidth =  3.5  ; % inches
-pHeight = 3.5*3/4;
+pHeight = pWidth * 3/4;
 
 colpos = [0 0 0;0 166 81;237 28 36;0 174 239; 247 148 30 ]/255; % colors, 1 black; 2 green; 3 red; 4 blue; 5 yellow
 

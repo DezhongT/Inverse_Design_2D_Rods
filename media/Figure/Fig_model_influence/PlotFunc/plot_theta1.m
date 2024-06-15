@@ -37,8 +37,9 @@ for i = 1:3
     y_symlog = symlog(theta);
 
     % plot(S, y_symlog);
-    plot(S, symlog(theta1), 'Color', mycolor(i,:),  'LineStyle', mystyle(i), ...
+    p = plot(S, symlog(theta1), 'Color', mycolor(i,:),  'LineStyle', mystyle(i), ...
     'LineWidth',lineNumbebr);
+    p.Color(4) = 0.75;
 end
 
 h1 =figure(1);
@@ -50,24 +51,8 @@ yticks = [-10 -1 0 1 10 50];
 yticklabels = arrayfun(@num2str, yticks, 'UniformOutput', false);
 set(gca, 'YTick', symlog(yticks), 'YTickLabel', yticklabels);
 
-
-% set(gca, 'YScale', 'log');
-% lgd = legend('show');
-% lgd.Orientation = 'horizontal'; % Set the legend orientation to horizontal
-% lgd.Location = "northoutside";
-% lgd.Position = [0.5, 0.8, 0.37, 0.01]; % Adjust these values as needed
-% lgd.Interpreter = 'latex'; % Use LaTeX interpreter
-% lgd.FontName = 'CMU Serif'; % Set font to LaTeX Computer Modern
-% lgd.FontSize = 10; % Set font size
-% lgd.NumColumns = 1;
-
-
-xlabel(gca, 'Arc length, $s$', 'interpreter', 'latex','FontSize',FONTSIZE)
+xlabel(gca, 'Normalized arc length, $\tilde{s}$', 'interpreter', 'latex','FontSize',FONTSIZE)
 ylabel(gca, 'Derivative of rotation angle, $\theta''$', 'interpreter', 'latex','FontSize',FONTSIZE);
-
-
-% legend(h1,{'Theory baseline','Noise baseline', 'Proposed scheme'},...
-%     'location','northoutside', 'Orientation','horizontal', 'Interpreter','latex');
 
 set(gca,'fontsize',FONTSIZE,'TickLabelInterpreter','latex');
 set(gcf, 'PaperUnits','inches', 'PaperPosition',[0 0 pWidth pHeight], ...

@@ -35,9 +35,9 @@ for i = 1:3
 
     y_symlog = symlog(theta);
 
-    % plot(S, y_symlog);
-    plot(S, symlog(theta), 'Color', mycolor(i,:), 'LineStyle', mystyle(i), ...
+    p = plot(S, symlog(theta), 'Color', mycolor(i,:), 'LineStyle', mystyle(i), ...
     'LineWidth',lineNumbebr);
+    p.Color(4) = 0.75;
 end
 
 
@@ -53,7 +53,7 @@ yticks = [-10 -5 -1 -0.5 -0.1 0 0.5];
 yticklabels = arrayfun(@num2str, yticks, 'UniformOutput', false);
 set(gca, 'YTick', symlog(yticks), 'YTickLabel', yticklabels);
 
-xlabel(gca, 'Arc length, $s$', 'interpreter', 'latex','FontSize',FONTSIZE)
+xlabel(gca, 'Normalized arc length, $\tilde{s}$', 'interpreter', 'latex','FontSize',FONTSIZE)
 ylabel(gca, 'Rotation angle, $\theta$', 'interpreter', 'latex','FontSize',FONTSIZE);
 
 
