@@ -310,8 +310,8 @@ for i = 1:length(hSubplots)
     xlabel(hSubplots(i), '$\eta$', 'interpreter', 'latex', 'FontSize', FONTSIZE)
     % ylabel(hSubplots(i), 'Error, $e$', 'interpreter', 'latex', 'FontSize', FONTSIZE)
     xticks(hSubplots(i), [5 10 15])
-    yticks(hSubplots(i), [0 0.25 0.5 0.75 1])
-    ylim(hSubplots(i), [0 0.25])
+    yticks(hSubplots(i), [0 0.2 0.4 0.6 0.8 1])
+    ylim(hSubplots(i), [0 0.4])
     set(hSubplots(i),'fontsize',FONTSIZE,'TickLabelInterpreter','latex');
 end
 
