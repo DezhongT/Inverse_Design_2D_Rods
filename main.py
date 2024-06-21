@@ -1,25 +1,39 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy
+from scipy.io import savemat
 from utils import generate_config_from_txt , generate_config_from_scratch
 from solver import compute_theory, forward_solver, numerical_optimization
+import sys
 
-# np.random.seed(1000)
-# np.random.seed(50)
-# np.random.seed(12)
+np.random.seed(42)
 
-def run_simulation(noise, eta, id, degree = 15):
-        # Config, Config_noise = generate_config_from_txt("patterns/letterU.txt",  noise = 0.0e-4, rotation= -np.pi/2.0)
-        # Config, Config_noise = generate_config_from_txt("patterns/letterC1.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
-        # Config, Config_noise = generate_config_from_txt("patterns/letterL.txt",  noise = 0.0e-4, rotation= 0.0)
-        # Config, Config_noise = generate_config_from_txt("patterns/letterA.txt",  noise = 0.0e-4, rotation= np.pi/2.0)
-        Config, Config_noise = generate_config_from_scratch(noise = noise)
-        # Config, Config_noise = generate_config_from_txt("patterns/sine.txt",  noise = 10e-4, rotation= np.pi/2)
+def run_simulation(noise, eta, degree = 15, fileName = None, rotation = 0.0):
+        """
+        run the simulation to solve the inverse design of a planar rod
+        Parameters
+        ----------
+        noise : float
+            standard deviation of the gaussian noise to add to the target pattern.
+        eta: float
+            material properites to describe the bending deformations under external force (gravity)
+        degree : int, optional
+            the fitting degree number used for a polynomial function
+        fileName : string, option
+            if this is none, then the target shape will be generated randomly from scratch;
+            if this has a string, then the target shape will be read from a file located at the path
+        rotation: float, option
+            this is a rotation angle value used to adjust the rotation of the target shape; it should
+            be only added when fileName is not None
+        Returns
+        -------
+        None.
 
-        # exit(0)
+        """
+        if fileName is not None:
+                Config, Config_noise = generate_config_from_txt(fileName,  noise = noise, rotation= rotation)
+        else:
+                Config, Config_noise = generate_config_from_scratch(noise = noise)
 
-        # eta = 5 # definie the eta
-        # degree = 5 # define the degree of polynominal for theta
         Kap0_base, natural_config_base, BCs = compute_theory(Config, eta, degree=degree)
         pred_config_base = forward_solver(Kap0_base, Config[:, 0], eta,  BCs)
 
@@ -56,15 +70,37 @@ def run_simulation(noise, eta, id, degree = 15):
                 "natural_config_opt" : natural_config_opt, "pred_config_base": pred_config_base,
                 "pred_config_noise": pred_config_noise, "pred_config_opt" : pred_config_opt, 
                 "natural_config_detection": Config_noise}
-        
-        scipy.io.savemat(f'random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}_index_{id:g}.mat', Data)
-        plt.savefig(f'plot_random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}_index_{id:g}.png')
+
+        print(f'random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}.mat')
+        savemat(f'random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}.mat', Data)
+        plt.savefig(f'plot_random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}.png')
+
+def main(argv):
+        args = {}
+        for arg in argv[1:]:
+                if ":=" in arg:
+                        key, value = arg.split(":=")
+                        args[key] = value
+        if "fileName" in args:
+                if "degree" in args:
+                        if "rotation" in args:
+                                run_simulation(noise=float(args["noise"]), eta=float(args["eta"]), degree=int(args["degree"]), fileName=args["fileName"], rotation=float(args["rotation"]))
+                        else:
+                                run_simulation(noise=float(args["noise"]), eta=float(args["eta"]), degree=int(args["degree"]), fileName=args["fileName"])
+                else:
+                        if "rotation" in args:
+                                run_simulation(noise=float(args["noise"]), eta=float(args["eta"]), fileName=args["fileName"], rotation=float(args["rotation"]))
+                        else:
+                                run_simulation(noise=float(args["noise"]), eta=float(args["eta"]), fileName=args["fileName"])
+        else:
+                if "degree" in args:
+                        run_simulation(noise=float(args["noise"]), eta=float(args["eta"]), degree=int(args["degree"]))
+                else:
+                        run_simulation(noise=float(args["noise"]), eta=float(args["eta"]))
 
 
-eta_values = [5, 10, 15]
-noise_values = [0.5e-3, 1.5e-3, 2.0e-3]
-for id in range(11):
-        for eta in eta_values:
-                for noise in noise_values:
-                        run_simulation(noise, eta, id)
+
+if __name__=="__main__":
+        main(sys.argv)
+
 
