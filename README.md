@@ -1,34 +1,42 @@
-# Inverse Design for 2D Rods
+# Inverse Design for 2D Rods from Noisy Data
 Codes for form-finding of an arbitrary 2D rod under gravity.
+<p align="center">
+<img src="Figures/Figure_overview.png" alt>
+<br>
+<em> Figure 1. An example shown the inverse design of a 2D planar rod from noisy data  </em>
+</p>
 
 ## Dependence
-The codes include MATLAB and python scripts.
+The codes are designed by python and tested with Python 3.10.
 #### Python Dependencies
 ```bash
-python3 -m pip install numpy scipy
+python3 -m pip install numpy scipy matplotlib
 ```
-#### MATLAB Dependencies
-The latest MATLAB license
 
 ## Scripts Explanation
-### generate_config.m
-This script generates an arbitrary stable rod configuration under gravity, which offers the entry point(training data) for finding the design of the natural configuration of the rod.
+### main.py
+This script contains the functions to retrive the natural shape of a planar rod from a given target shape.
 #### Parameters
-- ```eta``` - The material properties of the rod.
-- ```like_prior``` - The noise magnitude of the measurement (training) data.
+- ```eta``` - The material properties of the rod, encapsulating the bending deformations via the gravitational force.
+- ```noise``` - The standard deviation of the added Gaussian noise.
+- ```degree``` - The degree of the polynoimal model used for fitting theta from the measured data.
+- ```fileName``` - The directory (path) contains the target pattern. If this is not specified, the codes will generate the random target pattern from scratch.
+- ```rotation``` - The rotation angle for the fileName. It is only added when the fileName is not None.
+#### Usage
+Here is an example:
+```bash
+python3 main.py noise:=0.5e-3 eta:=15 degree:=15 fileName:=patterns/letterA.txt rotation:=0.0
+```
 
-Once those two parameters are set, we can run the following script for computing the natural configuration of the rod.
+### Citation
+If our work has helped your research, please cite the following paper.
+```
+@article{tong_inverse_design_2024,
+  title={Inverse Design of Planar Rods from Noisy Data},
+  author={Tong, Dezhong and Hao, Zhuonan and Huang, Weicheng},
+  journal={arXiv preprint arXiv:5683697},
+  year={2024}
+}
+```
 
-### computeBaseLine.m
-This script generates the ground truth of the natural configuration of the rod
-
-### computeNoisyBaseLine.m
-This script generates the computed natural configuration of the rod from noisy training data.
-
-
-### inverse_rod_analytical_solver.py
-This script generates the optimized computed natural configuration of the rod from noisy training data. Note that the ```computeBaseLine.m``` and ```computeNoisyBaseLine.m``` should be run before running this script.
-
-### compareResult.m
-This script generates the comparison figure for visualizing the results from different schemes.
 
