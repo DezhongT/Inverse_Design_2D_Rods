@@ -3,7 +3,7 @@ Codes for form-finding of an arbitrary 2D rod under gravity.
 <p align="center">
 <img src="assets/demo.png" alt>
 <br>
-<em> Figure 1. An example shown the inverse design of a 2D planar rod from noisy data  </em>
+<em> An example shown the inverse design of a 2D planar rod from noisy data  </em>
 </p>
 
 ## Dependence
