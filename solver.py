@@ -33,7 +33,7 @@ class AdamOptimizer:
         params -= self.learning_rate * m_hat / (np.sqrt(v_hat) + self.epsilon)
 
 
-def compute_theory(Config, eta, degree = 6):
+def compute_theory(Config, eta, q_x_func, q_y_func, degree = 6):
     S = Config[:, 0]
     X = Config[:, 1]
     Y = Config[:, 2]
@@ -54,17 +54,25 @@ def compute_theory(Config, eta, degree = 6):
 
     def ode_backward(s, kap):
         dkap1_ds = kap[1]
+        q_x = q_x_func(s)
+        q_y = q_y_func(s)
         dkap2_ds = (eta * theta2(s) * kap[1] - eta * theta1(s)**3*kap[0] - \
-                    eta * theta4(s) * theta1(s) + eta * theta3(s) * theta2(s) + \
-                    eta * theta2(s) * (eta * np.cos(theta(s)) - theta1(s)**3) + \
-                    2 * eta**2 * np.sin(theta(s)) * theta1(s)**2)/(eta * theta1(s))
+                    eta * theta4(s) * theta1(s) + eta * theta3(s) * theta2(s) - \
+                    eta * theta2(s) * (eta * q_y * np.cos(theta(s)) + eta * q_x * np.sin(theta(s)) + theta1(s)**3) + \
+                    (2 * eta * q_x * np.cos(theta(s)) - 2 * eta * q_y * np.sin(theta(s))) * eta * theta1(s)**2 + \
+                    (dq_x * np.sin(theta(s)) + dq_y * np.cos(theta(s)) * eta * eta * theta1(s)) )/ \
+                    (eta * theta1(s))
         dkap_ds = np.vstack((dkap1_ds, dkap2_ds))
         return dkap_ds
 
     def bc_backward(kapa, kapb):
         se = S[-1]
-        return np.array([kapa[0] + theta2(0) - eta * np.cos(theta(0)),
+        q_y = q_y_func(0)
+        q_x = q_x_func(0)
+        return np.array([kapa[0] + theta2(0) + eta * q_y * np.cos(theta(0)) - eta * q_x * np.sin(theta(0)),
                          kapb[0] + theta2(se)])
+        # return np.array([kapa[0] + theta2(0) - eta * np.cos(theta(0)),
+        #                     kapb[0] + theta2(se)]) 
     S = np.linspace(0, S[-1], 101)
     sol_guess = np.zeros((2, S.size))
 
