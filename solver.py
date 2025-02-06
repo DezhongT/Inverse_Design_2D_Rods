@@ -32,12 +32,14 @@ class AdamOptimizer:
         # Update parameters
         params -= self.learning_rate * m_hat / (np.sqrt(v_hat) + self.epsilon)
 
-
-def compute_theory(Config, eta, degree = 6):
+def compute_theory(Config, eta, fx_func, fy_func, dfx_func, dfy_func, degree = 6):
     S = Config[:, 0]
     X = Config[:, 1]
     Y = Config[:, 2]
     Theta = compute_theta(S, X, Y)
+
+    S = np.linspace(0, S[-1], 101)
+
 
     p = np.polyfit(S, Theta, degree)
     theta = lambda x : np.polyval(p, x)
@@ -51,27 +53,37 @@ def compute_theory(Config, eta, degree = 6):
     theta4 = lambda x : np.polyval(dp4, x)
 
 
-
     def ode_backward(s, kap):
+        fx = fx_func(s)
+        fy = fy_func(s)
+        dfx = dfx_func(s)
+        dfy = dfy_func(s)
         dkap1_ds = kap[1]
-        dkap2_ds = (eta * theta2(s) * kap[1] - eta * theta1(s)**3*kap[0] - \
-                    eta * theta4(s) * theta1(s) + eta * theta3(s) * theta2(s) + \
-                    eta * theta2(s) * (eta * np.cos(theta(s)) - theta1(s)**3) + \
-                    2 * eta**2 * np.sin(theta(s)) * theta1(s)**2)/(eta * theta1(s))
+        dkap2_ds = (theta2(s) * kap[1] - theta1(s)**3*kap[0] - \
+                    theta4(s) * theta1(s) + theta3(s) * theta2(s) - \
+                    theta2(s) * (eta * fy * np.cos(theta(s)) - eta * fx * np.sin(theta(s)) + theta1(s)**3) - \
+                    2 * eta * (fx * np.cos(theta(s)) + fy * np.sin(theta(s))) * theta1(s)**2 + \
+                    eta * theta1(s) *  (dfy * np.cos(theta(s)) - dfx * np.sin(theta(s))))/  theta1(s)
         dkap_ds = np.vstack((dkap1_ds, dkap2_ds))
         return dkap_ds
 
     def bc_backward(kapa, kapb):
         se = S[-1]
-        return np.array([kapa[0] + theta2(0) - eta * np.cos(theta(0)),
-                         kapb[0] + theta2(se)])
+        fx = fx_func(0)
+        fy = fy_func(0)
+        kap1 = kapb[1] + theta3(se) - eta * fy * np.cos(theta(se)) + eta * fx * np.sin(theta(se))
+
+        return np.array([kap1,
+                         kapb[0] + theta2(se) ])
+    
     S = np.linspace(0, S[-1], 101)
     sol_guess = np.zeros((2, S.size))
 
-    sol = solve_bvp(ode_backward, bc_backward, S,  sol_guess, max_nodes = 10000, tol = 1e-7)
+    sol = solve_bvp(ode_backward, bc_backward, S,  sol_guess, max_nodes = 100000, tol = 1e-7)
     s = sol.x
     dKap = -sol.y
     residual = sol.rms_residuals
+    print(max(residual))
     if max(residual) > 1e-5:
         print("Backward BVP solver is wrong, the residual of sol is: ", max(residual))
     dKap_cubic = interp1d(s, dKap)
@@ -87,15 +99,79 @@ def compute_theory(Config, eta, degree = 6):
     natural_config = generate_config_from_theta(Theta1, S)
 
     # define func of Kap
-    # degree = 4
-    # p = np.polyfit(S, Kap, degree)
-    # Kap = lambda x : np.polyval(p, x)
+
     Kap = CubicSpline(S, Kap)
     # BCs
     BCs  = []
     BCs.append(["clamped", theta(0), 0, 0])
     BCs.append(["free"])
     return Kap, natural_config, BCs
+
+
+
+# def compute_theory(Config, eta, degree = 6):
+#     S = Config[:, 0]
+#     X = Config[:, 1]
+#     Y = Config[:, 2]
+#     Theta = compute_theta(S, X, Y)
+
+#     p = np.polyfit(S, Theta, degree)
+#     theta = lambda x : np.polyval(p, x)
+#     dp1 = np.polyder(p)
+#     theta1 = lambda x : np.polyval(dp1, x)
+#     dp2 = np.polyder(dp1)
+#     theta2 = lambda x : np.polyval(dp2, x)
+#     dp3 = np.polyder(dp2)
+#     theta3 = lambda x : np.polyval(dp3, x)
+#     dp4 = np.polyder(dp3)
+#     theta4 = lambda x : np.polyval(dp4, x)
+
+
+
+#     def ode_backward(s, kap):
+#         dkap1_ds = kap[1]
+#         dkap2_ds = (eta * theta2(s) * kap[1] - eta * theta1(s)**3*kap[0] - \
+#                     eta * theta4(s) * theta1(s) + eta * theta3(s) * theta2(s) + \
+#                     eta * theta2(s) * (eta * np.cos(theta(s)) - theta1(s)**3) + \
+#                     2 * eta**2 * np.sin(theta(s)) * theta1(s)**2)/(eta * theta1(s))
+#         dkap_ds = np.vstack((dkap1_ds, dkap2_ds))
+#         return dkap_ds
+
+#     def bc_backward(kapa, kapb):
+#         se = S[-1]
+#         return np.array([kapa[0] + theta2(0) - eta * np.cos(theta(0)),
+#                          kapb[0] + theta2(se)])
+#     S = np.linspace(0, S[-1], 101)
+#     sol_guess = np.zeros((2, S.size))
+
+#     sol = solve_bvp(ode_backward, bc_backward, S,  sol_guess, max_nodes = 10000, tol = 1e-7)
+#     s = sol.x
+#     dKap = -sol.y
+#     residual = sol.rms_residuals
+#     if max(residual) > 1e-5:
+#         print("Backward BVP solver is wrong, the residual of sol is: ", max(residual))
+#     dKap_cubic = interp1d(s, dKap)
+
+#     dKap = dKap_cubic(S)
+#     dKap = dKap[0]
+#     Kap = cumulative_trapezoid(dKap, S, initial = 0)
+#     # handling kap based on boundary conditions
+#     Kap0 = theta1(S[-1])
+#     Kap = Kap + Kap0 - Kap[-1]
+#     Theta1 = cumulative_trapezoid(Kap, S, initial = 0)
+#     Theta1 = Theta1 - Theta1[0] + theta(0)
+#     natural_config = generate_config_from_theta(Theta1, S)
+
+#     # define func of Kap
+#     # degree = 4
+#     # p = np.polyfit(S, Kap, degree)
+#     # Kap = lambda x : np.polyval(p, x)
+#     Kap = CubicSpline(S, Kap)
+#     # BCs
+#     BCs  = []
+#     BCs.append(["clamped", theta(0), 0, 0])
+#     BCs.append(["free"])
+#     return Kap, natural_config, BCs
 
 def forward_solver(Kap0, S, eta, BCs, qx_func, qy_func):
     def odefunc(s, q):
