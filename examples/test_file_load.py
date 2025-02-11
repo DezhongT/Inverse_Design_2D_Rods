@@ -16,7 +16,6 @@ np.random.seed(4)
 noise = 3e-3
 eta = 15  # eta = rho A g / EI
 degree = 15
-B = [0, 5]
 
 Config, Config_noise = generate_config_from_scratch(noise = noise)
 
