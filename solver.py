@@ -38,7 +38,7 @@ def compute_theory(Config, eta, fx_func, fy_func, dfx_func, dfy_func, degree = 6
     Y = Config[:, 2]
     Theta = compute_theta(S, X, Y)
 
-    S = np.linspace(0, S[-1], 101)
+    # S = np.linspace(0, S[-1], 101)
 
 
     p = np.polyfit(S, Theta, degree)
@@ -106,7 +106,6 @@ def compute_theory(Config, eta, fx_func, fy_func, dfx_func, dfy_func, degree = 6
     BCs.append(["clamped", theta(0), 0, 0])
     BCs.append(["free"])
     return Kap, natural_config, BCs
-
 
 
 # def compute_theory(Config, eta, degree = 6):

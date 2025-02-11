@@ -1,9 +1,9 @@
 # Inverse Design for 2D Rods from Noisy Data
 Codes for form-finding of an arbitrary 2D rod under gravity.
 <p align="center">
-<img src="Figures/Figure_overview.png" alt>
+<img src="Figures/Figure_comosum.png" alt>
 <br>
-<em> Figure 1. An example shown the inverse design of a 2D planar rod from noisy data  </em>
+<em> Figure 1. An example shown the inverse design of an artifical orchid   </em>
 </p>
 
 ## Dependence

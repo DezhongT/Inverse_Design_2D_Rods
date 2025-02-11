@@ -10,14 +10,16 @@ from scipy.integrate import solve_bvp, cumulative_trapezoid
 from scipy.interpolate import interp1d, CubicSpline
 from solver import forward_solver_magnetic
 
+# np.random.seed(42)
+# np.random.seed(40)
+np.random.seed(25)
 
 noise = 1e-3
 eta = 10  # eta = rho A g / EI
 degree = 10
-B = [0, 5]
+B = [-1, 0]
 
 Config, Config_noise = generate_config_from_scratch(noise = noise)
-
 
 qx_func = lambda x: 0
 qy_func = lambda x: 0
@@ -33,7 +35,11 @@ Kap0_opt, natural_config_opt, BCs = numerical_optimization_magnetic(Config_noise
 pred_config_opt = forward_solver_magnetic(Kap0_opt, Config_noise[:, 0], eta, BCs, B)
 print("Completed opt")
 
+Data = {"natural_config_opt" : natural_config_opt, "pred_config_base": pred_config_base,
+        "pred_config_opt" : pred_config_opt, "natural_config_detection": Config_noise}
 
+print(f'random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}.mat')
+savemat(f'random_eta_{eta:g}_degree_{degree:d}_noise_{noise:g}.mat', Data)
 
 plt.plot(Config[:, 1], Config[:, 2],  'k--' , label = "Original shape")
 plt.plot(pred_config_base[:, 0], pred_config_base[:, 1], label = "Pred base")
