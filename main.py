@@ -49,7 +49,7 @@ def run_simulation(noise, eta, degree = 15, fileName = None, rotation = 0.0):
         pred_config_noise = forward_solver(Kap0_noise, Config_noise[:, 0], eta,  BCs, qx_func, qy_func)
         print("Completed noise baseline")
 
-        Kap0_opt, natural_config_opt, BCs = numerical_optimization(Config_noise, Kap0_noise, eta, BCs, qx_func, qy_func, degree=degree-1, max_iter=3000)
+        Kap0_opt, natural_config_opt, BCs = numerical_optimization(Config_noise, Kap0_noise, eta, BCs, qx_func, qy_func, degree=degree-1, max_iter=1000)
         pred_config_opt = forward_solver(Kap0_opt, Config_noise[:, 0], eta,  BCs, qx_func, qy_func)
         print("Completed opt")
 
