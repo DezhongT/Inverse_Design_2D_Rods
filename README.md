@@ -1,9 +1,8 @@
-# Inverse Design for 2D Rods from Noisy Data
-Codes for form-finding of an arbitrary 2D rod under gravity.
+# Inverse Design of Planar Clamped-Free Elastic Rods from Noisy Data
 <p align="center">
 <img src="Assets/Figure_comosum.png" alt>
 <br>
-<em> Figure 1. An example shown the inverse design of an artifical orchid   </em>
+<em> An example shown the inverse design of an artifical orchid   </em>
 </p>
 
 ## Dependence
