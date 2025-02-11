@@ -4,7 +4,7 @@ Codes for form-finding of an arbitrary 2D rod under gravity.
 <img src="Assets/Figure_comosum.png" alt>
 <br>
 <em> Figure 1. An example shown the inverse design of an artifical orchid   </em>
-</p>
+</p>
 
 ## Dependence
 The codes are designed by python and tested with Python 3.10.
@@ -13,7 +13,7 @@ The codes are designed by python and tested with Python 3.10.
 python3 -m pip install numpy scipy matplotlib
 ```
 
-## Scripts Explanation
+## Usage
 ### main.py
 This script contains the functions to retrive the natural shape of a planar rod from a given target shape.
 #### Parameters
@@ -31,10 +31,10 @@ python3 main.py noise:=0.5e-3 eta:=15 degree:=15 fileName:=patterns/letterA.txt 
 ### Citation
 If our work has helped your research, please cite the following paper.
 ```
-@article{tong_inverse_design_2024,
-  title={Inverse Design of Planar Rods from Noisy Data},
+@article{tong2024inverse,
+  title={Inverse Design of Planar Clamped-Free Elastic Rods from Noisy Data},
   author={Tong, Dezhong and Hao, Zhuonan and Huang, Weicheng},
-  journal={arXiv preprint arXiv:5683697},
+  journal={arXiv preprint arXiv:2406.15166},
   year={2024}
 }
 ```
